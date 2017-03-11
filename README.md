@@ -1,18 +1,11 @@
-# Date Range Picker for Bootstrap
+# 多种时间区间选择的daterangepicker
+![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickermonth.png?raw=true)
 
-![Improvely.com](http://i.imgur.com/LbAMf3D.png)
+![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickerquator.png?raw=true)
 
-This date range picker component for Bootstrap creates a dropdown menu from which a user can
-select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
-which needed a way to select date ranges for reports.
+![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickeryear.png?raw=true)
+在使用时间控制选择时间时,会有月度、季度、年底等时间区间的选择，在daterangepicker源码中增加了3个模版，用来支撑不同区间的时间选择
 
-Features include limiting the selectable date range, localizable strings and date formats,
-a single date picker mode, optional time picker (for e.g. making appointments or reservations),
-and styles that match the default Bootstrap 3 theme.
-
-## [Documentation and Live Usage Examples](http://www.daterangepicker.com)
-
-## [See It In a Live Application](https://awio.iljmp.com/5/drpdemogh)
 
 ## License
 
