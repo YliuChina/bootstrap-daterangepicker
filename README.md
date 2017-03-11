@@ -4,6 +4,7 @@
 ![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickerquator.png?raw=true)
 
 ![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickeryear.png?raw=true)
+
 在使用时间控制选择时间时,会有月度、季度、年底等时间区间的选择，在daterangepicker源码中增加了3个模版，用来支撑不同区间的时间选择
 
 
