@@ -1,5 +1,5 @@
 # 多种时间区间选择的daterangepicker
-![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickermonth.png?raw=true)
+![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickermonth.png?raw=true  =100x100)
 
 ![Improvely.com](https://github.com/YliuChina/bootstrap-daterangepicker/blob/master/pickerquator.png?raw=true)
 
