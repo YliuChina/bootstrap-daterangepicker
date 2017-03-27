@@ -3,6 +3,8 @@
 
 在使用时间控制选择时间时,会有月度、季度、年底等时间区间的选择，在daterangepicker中增加了对应功能，用来支撑不同区间的时间选择
 
+# demo
+/website/deom.html
 
 ## License
 
