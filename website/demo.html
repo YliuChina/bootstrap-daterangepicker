@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Date Range Picker for Bootstrap</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/momentjs/2.5.1/moment.min.js"></script>         
+        <script type="text/javascript" src="../daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="../daterangepicker.css" />
+
+        <link rel="stylesheet" type="text/css" href="website.css" />
+
+
+    </head>
+    <body>
+
+        <div class="container main">
+            <div class="row">
+
+                <div id="nav-spy">
+
+
+                    <div id="examples" name="examples">
+
+                        <h2>Examples</h2>
+
+                        <div id="ex1" name="ex1">
+
+                            <h3>Date Range Picker 日模式</h3>
+                            <p> 新增参数 calendarMode = 'day'</p>
+                            <div class="row">
+                             <h4>Demo:</h4>
+                               <div class="btn btn-default" id="reportrange">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp; <span></span>
+                                <b class="fa fa-angle-down"></b>
+                            </div>
+                            </div>
+
+<script type="text/javascript">
+                            //Query by date
+    var picker_day = {
+        init: function (opt) {
+            var that = this;
+            that.id=opt.id;
+            that.initDate = {
+                singleDatePicker: opt.singleDatePicker || false,
+                calendarMode: opt.calendarMode || "day",
+                minDate: '2010-01-01',
+                dateLimit: {
+                    days: 1400
+                },
+                showDropdowns: false,
+                showWeekNumbers: false,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'YYYY-MM-DD',
+                separator: ' 至 ',
+                locale: {
+                    applyLabel: '选定日期',
+                    cancelLabel: '取消',
+                    fromLabel: '开始日期',
+                    toLabel: '结束日期',
+                    customRangeLabel: '自定义日期',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            };
+            that.param = {};
+            that.param.calendarMode = 'day';
+            //设置初始时间
+            if (opt.startDate instanceof Date) {
+                that.param.startDate = moment(opt.startDate).format('YYYY-MM-DD');
+            } else {
+                that.param.startDate = moment().subtract('days', 7).format('YYYY-MM-DD');
+            }
+            if (opt.endDate instanceof Date) {
+                that.param.endDate = moment(opt.endDate).format('YYYY-MM-DD');
+            } else {
+                that.param.endDate = moment().subtract('days', 1).format('YYYY-MM-DD');
+            }
+            that.param.maxDate = moment().subtract('days', 1);
+            //that.setDate(that.param.startDate, that.param.endDate);
+        },
+
+        getele: function () {
+            var that = this;
+            return $("#" + that.id);
+        },
+        render: function () {
+            var that = this;
+            that.param.ranges = {
+                '昨天': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                '近7天': [moment().subtract('days', 7), moment().subtract('days', 1)],
+                '近30天': [moment().subtract('days', 30), moment().subtract('days', 1)],
+                '当月': [moment().startOf('month'), moment().subtract('days', 1)],
+                '上月': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+            };
+            that.initDate = $.extend({}, that.initDate, that.param);
+            that.getele().daterangepicker(that.initDate, function (start, end) {
+                that.initDate.startDate = start.format('YYYYMMDD');
+                that.initDate.endDate = end.format('YYYYMMDD');
+            });
+        },
+        getval: function () {
+            var that = this;
+            return { 'start': moment(that.initDate.startDate).format('YYYYMMDD'), 'end': moment(that.initDate.endDate).format('YYYYMMDD') };
+        },
+        bingchage: function (callback) {
+            var that = this;
+            that.getele().on('apply.daterangepicker', function () {
+                callback && callback({
+                    id: that.id,
+                    val: { 'start': that.initDate.startDate, 'end': that.initDate.endDate }
+                });
+            });
+        }
+    };
+     picker_day.init({
+                            id: "reportrange",
+                            //起始时间
+                            startDate: new Date(),
+                            //截止时间
+                            endDate: new Date()
+                     })
+     picker_day.render();
+      </script>
+
+                        </div>
+
+                        <div id="ex2" name="ex2">
+
+                            <h3>Date Range Picker 月模式</h3>
+                            <p> 新增参数 calendarMode = 'month'</p>
+                            <div class="row">
+                                <div class="col-md-5 col-xs-12">
+                                    <h4>Demo:</h4>
+                                   <div class="btn btn-default" id="rangemonth">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp; <span></span>
+                                <b class="fa fa-angle-down"></b>
+                            </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+    //Query by month
+    var picker_mon = {
+        init: function (opt, callback) {
+            var that = this;
+            that.id=opt.id;
+            that.initDate = {
+                singleDatePicker: opt.singleDatePicker || false,
+                calendarMode: opt.calendarMode || "day",
+                minDate: '2010-01-01',
+                dateLimit: {
+                    days: 1400
+                },
+                showDropdowns: false,
+                showWeekNumbers: false,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'YYYY-MM-DD',
+                separator: ' 至 ',
+                locale: {
+                    applyLabel: '选定日期',
+                    cancelLabel: '取消',
+                    fromLabel: '开始日期',
+                    toLabel: '结束日期',
+                    customRangeLabel: '自定义日期',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            };
+            that.param = {};
+            that.param.format = 'YYYY-MM';
+            that.param.calendarMode = 'month';
+            if (opt.startDate instanceof Date) {
+                that.param.startDate = moment(opt.startDate).format('YYYY-MM');
+            } else {
+                that.param.startDate = moment().subtract('month', 1).format('YYYY-MM');
+            }
+            if (opt.endDate instanceof Date) {
+                that.param.endDate = moment(opt.endDate).format('YYYY-MM');
+            } else {
+                that.param.endDate = moment().subtract('month', 1).format('YYYY-MM');
+            }
+            that.param.maxDate = moment().subtract('month', 1).endOf('month');
+        },
+                getele: function () {
+            var that = this;
+            return $("#" + that.id);
+        },
+        render: function () {
+            var that = this;
+            that.param.ranges = {
+                '上月': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
+                '近3月': [moment().subtract('month', 3).startOf('month'), moment().subtract('month', 1).endOf('month')]
+            };
+            //覆盖父类参数 extend
+            that.initDate = $.extend({}, that.initDate, that.param);
+            that.getele().daterangepicker(that.initDate, function (start, end) {
+                //that.setDate(start.format('YYYY-MM'), end.format('YYYY-MM'));
+                that.initDate.startDate = start.format('YYYYMM');
+                that.initDate.endDate = end.format('YYYYMM');
+            });
+        },
+        getval: function () {
+            var that = this;
+            return { 'start': moment(that.initDate.startDate).format('YYYYMM'), 'end': moment(that.initDate.endDate).format('YYYYMM') };
+        },
+        bingchage: function (callback) {
+            //监听change时间
+            //调用回调函数
+            var that = this;
+            that.getele().on('apply.daterangepicker', function () {
+                callback && callback({
+                    id: that.id,
+                    val: { 'start': that.initDate.startDate, 'end': that.initDate.endDate }
+                });
+            });
+        }
+    };
+    picker_mon.init({id: "rangemonth",
+                            //起始时间
+                startDate: moment(),
+                            //截止时间
+                endDate: moment()
+              });
+    picker_mon.render();
+    </script>
+
+                        </div>
+
+                        <div id="ex3" name="ex3">
+
+                            <h3>Date Range Picker 季度模式</h3>
+                            <p> 新增参数 calendarMode = 'quarter'</p>
+
+                            <div class="row">
+                             <h4>Demo:</h4>
+                                <div class="col-md-3 col-xs-12">
+                                   <div class="btn btn-default" id="rangequarter">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp; <span></span>
+                                <b class="fa fa-angle-down"></b>
+                            </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                           
+
+var picker_quar = {
+        init: function (opt) {
+            var that = this;
+               that.id=opt.id;
+            that.initDate = {
+                singleDatePicker: opt.singleDatePicker || false,
+                calendarMode: opt.calendarMode || "day",
+                minDate: '2010-01-01',
+                dateLimit: {
+                    days: 1400
+                },
+                showDropdowns: false,
+                showWeekNumbers: false,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'YYYY-MM-DD',
+                separator: ' 至 ',
+                locale: {
+                    applyLabel: '选定日期',
+                    cancelLabel: '取消',
+                    fromLabel: '开始日期',
+                    toLabel: '结束日期',
+                    customRangeLabel: '自定义日期',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            };
+            that.param = {};
+            that.param.format = 'YYYY-MM';
+            that.param.calendarMode = 'quarter';
+            if (opt.startDate instanceof Date && opt.startDate != '') {
+                that.param.startDate = moment(opt.startDate).format('YYYYMM');
+            } else {
+                that.param.startDate = moment().subtract('month', that.monToQuar() + 3).startOf('month');
+            }
+            if (opt.endDate instanceof Date && opt.endDate != '') {
+                that.param.endDate = moment(opt.endDate).format('YYYYMM');
+            } else {
+                that.param.endDate = moment().subtract('month', that.monToQuar() + 1).endOf('month');
+            }
+            that.param.maxDate = moment().subtract('month', that.monToQuar() + 1).endOf('month');
+            //that.setDate(that.param.startDate, that.param.endDate);
+        },
+        monToQuar: function () {
+            var oDate = new Date();
+            return oDate.getMonth() % 3;
+        },
+        getele: function () {
+            var that = this;
+            return $("#" + that.id);
+        },
+        render: function () {
+            var that = this;
+            that.param.ranges = {
+                '上季度': [moment().subtract('month', that.monToQuar() + 3).startOf('month'), moment().subtract('month', that.monToQuar() + 1).endOf('month')],
+                '近3季度': [moment().subtract('month', that.monToQuar() + 9).startOf('month'), moment().subtract('month', that.monToQuar() + 1).endOf('month')]
+            };
+            that.initDate = $.extend({}, that.initDate, that.param);
+            that.getele().daterangepicker(that.initDate, function (start, end) {
+                //that.setDate(start.format('YYYY-MM'), end.format('YYYY-MM'));
+                that.initDate.startDate = start.format('YYYYMM');
+                that.initDate.endDate = end.format('YYYYMM');
+
+            });
+        },
+
+        getval: function () {
+            var that = this;
+            return {
+                'start': that.cusFormat(that.initDate.startDate, that.initDate.calendarMode),
+                'end': that.cusFormat(that.initDate.endDate, that.initDate.calendarMode)
+            };
+        },
+        bingchage: function (callback) {
+            var that = this;
+            that.getele().on('apply.daterangepicker', function () {
+                callback && callback({
+                    id: that.id,
+                    val: {
+                        'start': that.cusFormat(that.initDate.startDate, that.initDate.calendarMode),
+                        'end': that.cusFormat(that.initDate.endDate, that.initDate.calendarMode)
+                    }
+                });
+            });
+        }
+
+    };
+picker_quar.init({id: "rangequarter",
+                            //起始时间
+                startDate: moment(),
+                            //截止时间
+                endDate: moment()
+              })
+picker_quar.render();
+
+                            </script>
+
+                        </div>
+
+                        <div id="ex4" name="ex4">
+
+                           
+                            <h3>Date Range Picker 半年模式</h3>
+                            <p> 新增参数 calendarMode = 'halfyear'</p>
+
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <div class="col-md-3 col-xs-12">
+                                   <div class="btn btn-default" id="rangehalfyear">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp; <span></span>
+                                <b class="fa fa-angle-down"></b>
+                            </div>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <script type="text/javascript">
+var picker_halfy = {
+        init: function (opt) {
+            var that = this;
+            that.id=opt.id;
+            that.initDate = {
+                singleDatePicker: opt.singleDatePicker || false,
+                calendarMode: opt.calendarMode || "day",
+                minDate: '2010-01-01',
+                dateLimit: {
+                    days: 1400
+                },
+                showDropdowns: false,
+                showWeekNumbers: false,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'YYYY-MM-DD',
+                separator: ' 至 ',
+                locale: {
+                    applyLabel: '选定日期',
+                    cancelLabel: '取消',
+                    fromLabel: '开始日期',
+                    toLabel: '结束日期',
+                    customRangeLabel: '自定义日期',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            };
+            that.param = {};
+            that.param.format = 'YYYY-MM';
+            that.param.calendarMode = 'halfYear';
+            if (opt.startDate instanceof Date && opt.startDate != '') {
+                that.param.startDate = moment(opt.startDate).format('YYYYMM');
+            } else {
+                that.param.startDate = moment().subtract('month', this.monToYear() + 6).startOf('month');
+            }
+            if (opt.endDate instanceof Date && opt.endDate != '') {
+                that.param.endDate = moment(opt.endDate).format('YYYYMM');
+            } else {
+                that.param.endDate = moment().subtract('month', this.monToYear() + 1).endOf('month');
+            }
+            that.param.maxDate = moment().subtract('month', this.monToYear() + 1).endOf('month');
+            //that.setDate(that.param.startDate, that.param.endDate);
+        },
+                getele: function () {
+            var that = this;
+            return $("#" + that.id);
+        },
+                monToYear: function () {
+            var oDate = new Date();
+            return oDate.getMonth() % 6;
+        },
+        render: function () {
+            var that = this;
+            that.param.ranges = {
+                '上半年': [moment().subtract('month', this.monToYear() + 6).startOf('month'), moment().subtract('month', this.monToYear() + 1).endOf('month')],
+                '近1年半': [moment().subtract('month', this.monToYear() + 18).startOf('month'), moment().subtract('month', this.monToYear() + 1).endOf('month')]
+            };
+            that.initDate = $.extend({}, that.initDate, that.param);
+            that.getele().daterangepicker(that.initDate, function (start, end) {
+                //that.setDate(start.format('YYYY-MM'), end.format('YYYY-MM'));
+                that.initDate.startDate = start.format('YYYYMM');
+                that.initDate.endDate = end.format('YYYYMM');
+            });
+        },
+        getval: function () {
+            var that = this;
+            return {
+                'start': that.cusFormat(that.initDate.startDate, that.initDate.calendarMode),
+                'end': that.cusFormat(that.initDate.endDate, that.initDate.calendarMode)
+            };
+        },
+        bingchage: function (callback) {
+            var that = this;
+            that.getele().on('apply.daterangepicker', function () {
+                callback && callback({
+                    id: that.id,
+                    val: {
+                        'start': that.cusFormat(that.initDate.startDate, that.initDate.calendarMode),
+                        'end': that.cusFormat(that.initDate.endDate, that.initDate.calendarMode)
+                    }
+                });
+            });
+        }
+    };
+    picker_halfy.init({id: "rangehalfyear",
+                            //起始时间
+                startDate: moment(),
+                            //截止时间
+                endDate: moment()
+              })
+	picker_halfy.render();
+
+                        </script>
+
+
+
+                        <div id="ex4" name="ex4">
+
+                           
+                            <h3>Date Range Picker 年模式</h3>
+                            <p> 新增参数 calendarMode = 'year'</p>
+
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <div class="col-md-3 col-xs-12">
+                                   <div class="btn btn-default" id="rangeyear">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp; <span></span>
+                                <b class="fa fa-angle-down"></b>
+                            </div>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <script type="text/javascript">
+var picker_year = {
+        init: function (opt) {
+            var that = this;
+            that.id=opt.id;
+            that.initDate = {
+                singleDatePicker: opt.singleDatePicker || false,
+                calendarMode: opt.calendarMode || "day",
+                minDate: '2010-01-01',
+                dateLimit: {
+                    days: 1400
+                },
+                showDropdowns: false,
+                showWeekNumbers: false,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'YYYY-MM-DD',
+                separator: ' 至 ',
+                locale: {
+                    applyLabel: '选定日期',
+                    cancelLabel: '取消',
+                    fromLabel: '开始日期',
+                    toLabel: '结束日期',
+                    customRangeLabel: '自定义日期',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            };
+            that.param = {};
+            that.param.format = 'YYYY';
+            that.param.locale = {
+                applyLabel: '选定日期',
+                cancelLabel: '取消',
+                fromLabel: '开始日期',
+                toLabel: '结束日期',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            };
+            //that.param.locale.customRangeLabel = 'Custom Range';
+            if (opt.startDate instanceof Date && opt.startDate != '') {
+                that.param.startDate = moment(opt.startDate).format('YYYY');
+            } else {
+                that.param.startDate = moment().subtract('year', 1).format('YYYY');
+            }
+            if (opt.endDate instanceof Date && opt.endDate != '') {
+                that.param.endDate = moment(opt.endDate).format('YYYY');
+            } else {
+                that.param.endDate = moment().subtract('year', 1).format('YYYY');
+            }
+            that.param.maxDate = moment().subtract('year', 1).endOf('year');
+        },
+          getele: function () {
+            var that = this;
+            return $("#" + that.id);
+        },
+        render: function () {
+            var that = this;
+            //只能选择区间
+            that.param.ranges = {
+                '近1年': [moment().subtract('year', 2).startOf('year'), moment().subtract('year', 1).endOf('year')],
+                '近2年': [moment().subtract('year', 3).startOf('year'), moment().subtract('year', 1).endOf('year')],
+                '近3年': [moment().subtract('year', 4).startOf('year'), moment().subtract('year', 1).endOf('year')]
+            };
+            that.initDate = $.extend({}, that.initDate, that.param);
+            that.getele().daterangepicker(that.initDate, function (start, end) {
+                that.initDate.startDate = start.format('YYYY');
+                that.initDate.endDate = end.format('YYYY');
+            });
+        },
+        getval: function () {
+            var that = this;
+            return { 'start': that.initDate.startDate, 'end': that.initDate.endDate };
+        },
+        bingchage: function (callback) {
+            var that = this;
+            that.getele().on('apply.daterangepicker', function () {
+                callback && callback({
+                    id: that.id,
+                    val: { 'start': that.initDate.startDate, 'end': that.initDate.endDate }
+                });
+            });
+        }
+    };
+    picker_year.init({id: "rangeyear",
+                            //起始时间
+                startDate: moment(),
+                            //截止时间
+                endDate: moment()
+              })
+	picker_year.render();
+
+                        </script>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Begin W3Counter Tracking Code -->
+        <!-- End W3Counter Tracking Code -->
+
+
+    </body>
+</html>

@@ -103,7 +103,6 @@ input[type="text"] {
 
 #nav-spy {
     float: left;
-    width: 300px;
 }
 
 @media (max-width: 980px) {
